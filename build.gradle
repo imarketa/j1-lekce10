@@ -27,7 +27,7 @@ dependencies {
 }
 
 application {
-    mainClass = "cz.czechitas.lekce9.Aplikace"
+    mainClass = "cz.czechitas.lekce10.Aplikace"
 }
 
 test {
