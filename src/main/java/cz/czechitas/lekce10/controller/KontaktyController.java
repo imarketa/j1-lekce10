@@ -37,15 +37,15 @@ public class KontaktyController {
   private final Action ulozitAction;
 
   public KontaktyController() {
-    model =  new PresentationModel<>(new OsobaBean());
+    model = new PresentationModel<>(new OsobaBean());
     novyAction = ActionBuilder.create("&Nový", this::handleNovy);
     ulozitAction = ActionBuilder.create("&Uložit", this::handleUlozit);
     model.addBeanPropertyChangeListener(this::handlePropertyChange);
+    vypoctiStavAkci();
   }
 
   private void handlePropertyChange(PropertyChangeEvent propertyChangeEvent) {
-    //TODO 1 Tlačítko „Uložit“ zpřístupnit jenom tehdy, když je zadané jmené, příjmení, a datum narození.
-    System.out.println("Došlo ke změně modelu.");
+    vypoctiStavAkci();
   }
 
   public PresentationModel<OsobaBean> getModel() {
@@ -58,6 +58,10 @@ public class KontaktyController {
 
   public Action getUlozitAction() {
     return ulozitAction;
+  }
+
+  private void vypoctiStavAkci() {
+    //TODO 1 Tlačítko „Uložit“ zpřístupnit jenom tehdy, když je zadané jmené, příjmení, a datum narození.
   }
 
   public void handleNovy() {

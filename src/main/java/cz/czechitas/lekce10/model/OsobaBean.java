@@ -23,7 +23,7 @@ public class OsobaBean implements ObservableBean {
   private String adresa;
   private String kraj;
   private LocalDate datumNarozeni;
-  private int vek;
+  private Integer vek;
 
   public String getJmeno() {
     return jmeno;
@@ -33,8 +33,9 @@ public class OsobaBean implements ObservableBean {
     if (jmeno.isBlank()) {
       jmeno = null;
     }
-    pcs.firePropertyChange("jmeno", this.jmeno, jmeno);
+    String oldValue = this.jmeno;
     this.jmeno = jmeno;
+    pcs.firePropertyChange("jmeno", oldValue, jmeno);
     vypoctiCeleJmeno();
   }
 
@@ -46,8 +47,9 @@ public class OsobaBean implements ObservableBean {
     if (prijmeni.isBlank()) {
       prijmeni = null;
     }
-    pcs.firePropertyChange("prijmeni", this.prijmeni, prijmeni);
+    String oldValue = this.prijmeni;
     this.prijmeni = prijmeni;
+    pcs.firePropertyChange("prijmeni", oldValue, prijmeni);
     vypoctiCeleJmeno();
   }
 
@@ -59,8 +61,9 @@ public class OsobaBean implements ObservableBean {
     if (titulPred.isBlank()) {
       titulPred = null;
     }
-    pcs.firePropertyChange("titulPred", this.titulPred, titulPred);
+    String oldValue = this.titulPred;
     this.titulPred = titulPred;
+    pcs.firePropertyChange("titulPred", oldValue, titulPred);
     vypoctiCeleJmeno();
   }
 
@@ -72,8 +75,9 @@ public class OsobaBean implements ObservableBean {
     if (titulZa.isBlank()) {
       titulZa = null;
     }
-    pcs.firePropertyChange("titulZa", this.titulZa, titulZa);
+    String oldValue = this.titulZa;
     this.titulZa = titulZa;
+    pcs.firePropertyChange("titulZa", oldValue, titulZa);
     vypoctiCeleJmeno();
   }
 
@@ -82,8 +86,9 @@ public class OsobaBean implements ObservableBean {
   }
 
   protected void setCeleJmeno(String celeJmeno) {
-    pcs.firePropertyChange("celeJmeno", this.celeJmeno, celeJmeno);
+    String oldValue = this.celeJmeno;
     this.celeJmeno = celeJmeno;
+    pcs.firePropertyChange("celeJmeno", oldValue, celeJmeno);
   }
 
   public String getAdresa() {
@@ -91,8 +96,9 @@ public class OsobaBean implements ObservableBean {
   }
 
   public void setAdresa(String adresa) {
-    pcs.firePropertyChange("adresa", this.adresa, adresa);
+    String oldValue = this.adresa;
     this.adresa = adresa;
+    pcs.firePropertyChange("adresa", oldValue, adresa);
   }
 
   public String getKraj() {
@@ -100,8 +106,9 @@ public class OsobaBean implements ObservableBean {
   }
 
   public void setKraj(String kraj) {
-    pcs.firePropertyChange("kraj", this.kraj, kraj);
+    String oldValue = this.kraj;
     this.kraj = kraj;
+    pcs.firePropertyChange("kraj", oldValue, kraj);
   }
 
   public LocalDate getDatumNarozeni() {
@@ -109,8 +116,9 @@ public class OsobaBean implements ObservableBean {
   }
 
   public void setDatumNarozeni(LocalDate datumNarozeni) {
-    pcs.firePropertyChange("datumNarozeni", this.datumNarozeni, datumNarozeni);
+    LocalDate oldValue = this.datumNarozeni;
     this.datumNarozeni = datumNarozeni;
+    pcs.firePropertyChange("datumNarozeni", oldValue, datumNarozeni);
     vypoctiVek();
   }
 
@@ -122,22 +130,23 @@ public class OsobaBean implements ObservableBean {
   }
 
   public void setDatumNarozeniDate(Date datumNarozeni) {
-    pcs.firePropertyChange("datumNarozeniDate", this.datumNarozeni, datumNarozeni);
     if (datumNarozeni == null) {
       this.setDatumNarozeni(null);
     } else {
       this.setDatumNarozeni(LocalDate.ofInstant(datumNarozeni.toInstant(), ZoneId.systemDefault()));
     }
+    pcs.firePropertyChange("datumNarozeniDate", null, datumNarozeni);
     vypoctiVek();
   }
 
-  public int getVek() {
+  public Integer getVek() {
     return vek;
   }
 
-  protected void setVek(int vek) {
-    pcs.firePropertyChange("vek", this.vek, vek);
+  protected void setVek(Integer vek) {
+    Integer oldValue = this.vek;
     this.vek = vek;
+    pcs.firePropertyChange("vek", oldValue, vek);
   }
 
   protected void vypoctiCeleJmeno() {
@@ -164,10 +173,9 @@ public class OsobaBean implements ObservableBean {
 
   protected void vypoctiVek() {
     if (datumNarozeni == null) {
-      setVek(0);
+      setVek(null);
     }
-    int vek = datumNarozeni.until(LocalDate.now()).getYears();
-    setVek(vek);
+    setVek(datumNarozeni.until(LocalDate.now()).getYears());
   }
 
   @Override

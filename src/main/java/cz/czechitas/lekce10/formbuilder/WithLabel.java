@@ -24,7 +24,7 @@ public interface WithLabel<B> {
 
   <E> WithInput<B> comboBox(String property, List<E> items, Consumer<JComboBox<E>> configuration);
 
-  WithInput<B> checkbox(String property);
+  WithInput<B> checkbox(String label, String property);
 
-  WithInput<B> checkbox(String property, Consumer<JCheckBox> configuration);
+  WithInput<B> checkbox(String label, String property, Consumer<JCheckBox> configuration);
 }

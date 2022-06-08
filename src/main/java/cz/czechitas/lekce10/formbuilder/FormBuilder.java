@@ -1,8 +1,10 @@
 package cz.czechitas.lekce10.formbuilder;
 
 import com.jgoodies.binding.PresentationModel;
+import com.jgoodies.binding.adapter.BasicComponentFactory;
 import com.jgoodies.binding.adapter.Bindings;
 import com.jgoodies.binding.list.SelectionInList;
+import com.jgoodies.common.swing.MnemonicUtils;
 
 import javax.swing.*;
 import javax.swing.text.DateFormatter;
@@ -42,14 +44,7 @@ public class FormBuilder<B> implements WithModel<B>, FormBuilderWithContainer<B>
   @Override
   public WithLabel<B> label(String text) {
     this.label = new JLabel();
-    int mnemonicIndex = text.indexOf("&");
-    if (mnemonicIndex < 0) {
-      this.label.setText(text);
-    } else {
-      Objects.checkIndex(mnemonicIndex, text.length() - 1);
-      this.label.setText(text.substring(0, mnemonicIndex) + text.substring(mnemonicIndex + 1));
-      this.label.setDisplayedMnemonicIndex(mnemonicIndex);
-    }
+    MnemonicUtils.configure(label, text);
     return this;
   }
 
@@ -60,8 +55,7 @@ public class FormBuilder<B> implements WithModel<B>, FormBuilderWithContainer<B>
 
   @Override
   public WithInput<B> textField(String property, Consumer<JTextField> configuration) {
-    JTextField textField = new JTextField();
-    Bindings.bind(textField, model.getModel(property));
+    JTextField textField = BasicComponentFactory.createTextField(model.getModel(property));
 
     if (configuration != null) {
       configuration.accept(textField);
@@ -75,8 +69,7 @@ public class FormBuilder<B> implements WithModel<B>, FormBuilderWithContainer<B>
   }
 
   private WithInput<B> formattedTextField(String property, JFormattedTextField.AbstractFormatter formatter, Consumer<JFormattedTextField> configuration) {
-    JFormattedTextField formattedTextField = new JFormattedTextField(formatter);
-    Bindings.bind(formattedTextField, model.getModel(property));
+    JFormattedTextField formattedTextField = BasicComponentFactory.createFormattedTextField(model.getModel(property), formatter);
 
     if (configuration != null) {
       configuration.accept(formattedTextField);
@@ -116,9 +109,8 @@ public class FormBuilder<B> implements WithModel<B>, FormBuilderWithContainer<B>
 
   @Override
   public <E> WithInput<B> comboBox(String property, List<E> items, Consumer<JComboBox<E>> configuration) {
-    JComboBox<E> comboBox = new JComboBox<>();
     SelectionInList<E> selectionInList = new SelectionInList<>(items, model.getModel(property));
-    Bindings.bind(comboBox, selectionInList);
+    JComboBox<E> comboBox = BasicComponentFactory.createComboBox(selectionInList);
 
     if (configuration != null) {
       configuration.accept(comboBox);
@@ -132,22 +124,17 @@ public class FormBuilder<B> implements WithModel<B>, FormBuilderWithContainer<B>
   }
 
   @Override
-  public WithInput<B> checkbox(String property) {
-    return checkbox(property, null);
+  public WithInput<B> checkbox(String label, String property) {
+    return checkbox(label, property, null);
   }
 
   @Override
-  public WithInput<B> checkbox(String property, Consumer<JCheckBox> configuration) {
-    JCheckBox checkBox = new JCheckBox();
-    Bindings.bind(checkBox, model.getModel(property));
-    checkBox.setText(label.getText());
-    checkBox.setMnemonic(label.getDisplayedMnemonic());
+  public WithInput<B> checkbox(String label, String property, Consumer<JCheckBox> configuration) {
+    JCheckBox checkBox = BasicComponentFactory.createCheckBox(model.getModel(property), label);
 
     if (configuration != null) {
       configuration.accept(checkBox);
     }
-
-    label = null;
 
     this.input = checkBox;
     return this;
