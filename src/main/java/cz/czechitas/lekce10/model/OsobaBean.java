@@ -12,7 +12,8 @@ import java.util.Date;
  * JavaBean s údaji o osobě.
  */
 public class OsobaBean implements ObservableBean {
-
+  //TODO 2 Přidat property „pohlavi“ typu String. Při změně hodnoty informovat posluchače události.
+  //TODO 3 Přidat readonly property „dospely“ typu boolean. Při změně hodnoty informovat posluchače události. Property se bude nastavovat z metody vypoctiVek.
   private final ExtendedPropertyChangeSupport pcs = new ExtendedPropertyChangeSupport(this);
   private String jmeno;
   private String prijmeni;
