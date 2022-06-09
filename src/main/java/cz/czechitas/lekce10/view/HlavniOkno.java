@@ -89,7 +89,15 @@ public class HlavniOkno extends JFrame {
     //TODO 5 Přidat combobox pro property „pohlavi“ s odpovídajícím labelem. Jako seznam možných hodnot použijte KontaktyController.POHLAVI.
 
     //TODO 6 Přidat readonly checkbox property „dospely“ s odpovídajícím labelem. Použijte metodu checkbox z formBuilderu.
+    formBuilder
+            .label("&Pohlaví")
+                    .comboBox("pohlavi", KontaktyController.POHLAVI)
+            .add("span");
 
+    formBuilder
+            .checkbox("Dospělý", "dospely", c->c.setEnabled(false))
+            .add("span 2");
+    
     formBuilder
             .panel(panel -> {
               JButton novyButton = new JButton(controller.getNovyAction());

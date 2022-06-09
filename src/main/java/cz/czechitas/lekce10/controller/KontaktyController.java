@@ -31,22 +31,11 @@ public class KontaktyController {
           "Zlínský kraj"
   );
 
+  public static final List<String> POHLAVI = Arrays.asList("Žena", "Muž");
   //TODO 4 Přidat konstantu „POHLAVI“, která bude obsahovat „List“ typů „String“ se seznamem pohlaví. Do seznamu zadejte alespoň hodnoty „muž“ a „žena“.
   private final PresentationModel<OsobaBean> model;
   private final Action novyAction;
   private final Action ulozitAction;
-
-  public KontaktyController() {
-    model = new PresentationModel<>(new OsobaBean());
-    novyAction = ActionBuilder.create("&Nový", this::handleNovy);
-    ulozitAction = ActionBuilder.create("&Uložit", this::handleUlozit);
-    model.addBeanPropertyChangeListener(this::handlePropertyChange);
-    vypoctiStavAkci();
-  }
-
-  private void handlePropertyChange(PropertyChangeEvent propertyChangeEvent) {
-    vypoctiStavAkci();
-  }
 
   public PresentationModel<OsobaBean> getModel() {
     return model;
@@ -60,12 +49,27 @@ public class KontaktyController {
     return ulozitAction;
   }
 
-  private void vypoctiStavAkci() {
-    //TODO 1 Tlačítko „Uložit“ zpřístupnit jenom tehdy, když je zadané jmené, příjmení, a datum narození.
-  }
-
   public void handleNovy() {
     this.model.setBean(new OsobaBean());
+  }
+
+  private void handlePropertyChange(PropertyChangeEvent propertyChangeEvent) {
+    vypoctiStavAkci();
+  }
+
+  public KontaktyController() {
+    model = new PresentationModel<>(new OsobaBean());
+    novyAction = ActionBuilder.create("&Nový", this::handleNovy);
+    ulozitAction = ActionBuilder.create("&Uložit", this::handleUlozit);
+    model.addBeanPropertyChangeListener(this::handlePropertyChange);
+    vypoctiStavAkci();
+  }
+
+  private void vypoctiStavAkci() {
+    //TODO 1 Tlačítko „Uložit“ zpřístupnit jenom tehdy, když je zadané jmené, příjmení, a datum narození.
+    OsobaBean osoba = model.getBean();
+    boolean enabled = osoba.getJmeno() != null && osoba.getPrijmeni() != null && osoba.getDatumNarozeni() != null;
+    ulozitAction.setEnabled(enabled);
   }
 
   public void handleUlozit() {

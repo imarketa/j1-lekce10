@@ -25,6 +25,33 @@ public class OsobaBean implements ObservableBean {
   private LocalDate datumNarozeni;
   private Integer vek;
 
+  public boolean isDospely() {
+    return dospely;
+  }
+
+  protected void setDospely(Boolean dospely) {
+    this.dospely = dospely;
+    //doplnit kod z repository
+
+  }
+
+  private boolean dospely;
+
+  public String getPohlavi() {
+    return pohlavi;
+  }
+
+  public void setPohlavi(String pohlavi) {
+    if (pohlavi.isBlank()){
+      pohlavi=null;
+    }
+    String oldValue = this.pohlavi;
+    this.pohlavi = pohlavi;
+    pcs.firePropertyChange("pohlaví", oldValue, pohlavi);
+  }
+
+  private String pohlavi;
+
   public String getJmeno() {
     return jmeno;
   }
@@ -174,8 +201,10 @@ public class OsobaBean implements ObservableBean {
   protected void vypoctiVek() {
     if (datumNarozeni == null) {
       setVek(null);
+      setDospely(null);
     }
     setVek(datumNarozeni.until(LocalDate.now()).getYears());
+    setDospely(vek>=18);
   }
 
   @Override
